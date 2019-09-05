@@ -57,7 +57,6 @@ const followersArray = [
 followersArray.forEach(name => {
   axios.get(`https://api.github.com/users/${name}`)
   .then(response => {
-      console.log(response)
       cardContainer.appendChild(cardCreator(response.data))
   })
   .catch((error) =>{
@@ -71,15 +70,19 @@ followersArray.forEach(name => {
 const importFollowersArray = [];
 axios.get('https://api.github.com/users/ekajjj/followers')
 .then(response => {
-  console.log(response);
   for(i = 0; i < response.data.length; i++){
+    console.log((response.data[i].login.toLowerCase()));
+    console.log(!followersArray.includes(response.data[i].login.toLowerCase()));
+    if(!followersArray.includes(response.data[i].login.toLowerCase())){
     importFollowersArray.push(response.data[i]);
-    console.log(response.data[i])
+    }
+    //console.log(response.data[i])
   }
   for(j = 0; j < importFollowersArray.length; j++){
     axios.get(`https://api.github.com/users/${importFollowersArray[j].login}`)
   .then(response2 => {
-    //console.log(!followersArray.includes(response2.data));
+    //console.log(response2.data.login);
+     //console.log(followersArray.includes(response2.data.login));
       //if(! followersArray.includes(response2))
       cardContainer.appendChild(cardCreator(response2.data))
   })
