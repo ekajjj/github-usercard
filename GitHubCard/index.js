@@ -68,6 +68,7 @@ followersArray.forEach(name => {
 
 
 // STRETCH FOLLOWERS
+/*
 const importFollowersArray = [];
 axios.get('https://api.github.com/users/ekajjj/followers')
 .then(response => {
@@ -79,23 +80,36 @@ axios.get('https://api.github.com/users/ekajjj/followers')
     cardContainer.appendChild(cardCreator(importFollowersArray[j]))
   }
 });
-
+*/
 // TRY TO GET ALL FOLLOWERS OF ALL USERS IN FOLLOWERSARRAY
-/*
+// Why is their data undefined?
 const allFollowersArray = [];
 for(i = 0; i < followersArray.length; i++){
-axios.get(`https://api.github.com/users/${name}/followers`)
+axios.get(`https://api.github.com/users/${followersArray[i]}/followers`)
 .then(response => {
   for(i = 0; i < response.data.length; i++){
     allFollowersArray.push(response.data[i]);
   }
   for(j = 0; j < allFollowersArray.length; j++){
+    
+/*
+  axios.get(`https://api.github.com/users/${allFollowersArray[j]}`)
+  .then(response => {
+      console.log(response)
+      cardContainer.appendChild(cardCreator(response.data))
+  })
+  .catch((error) =>{
+    console.log(error, 'Error')
+  })
+  */
+
     cardContainer.appendChild(cardCreator(allFollowersArray[j]))
   }
 }
 )
 }
-*/
+
+
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
 
