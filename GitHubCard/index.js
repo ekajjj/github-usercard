@@ -25,7 +25,6 @@ axios.get('https://api.github.com/users/ekajjj')
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
-
    Skip to Step 3.
 */
 
@@ -68,21 +67,31 @@ followersArray.forEach(name => {
 
 
 // STRETCH FOLLOWERS
-/*
+
 const importFollowersArray = [];
 axios.get('https://api.github.com/users/ekajjj/followers')
 .then(response => {
   console.log(response);
   for(i = 0; i < response.data.length; i++){
     importFollowersArray.push(response.data[i]);
+    console.log(response.data[i])
   }
   for(j = 0; j < importFollowersArray.length; j++){
-    cardContainer.appendChild(cardCreator(importFollowersArray[j]))
+    axios.get(`https://api.github.com/users/${importFollowersArray[j].login}`)
+  .then(response2 => {
+      //if(!followersArray.includes(response2.data))
+      cardContainer.appendChild(cardCreator(response2.data))
+  })
+  .catch((error) =>{
+    console.log(error, 'Error')
+  })
   }
 });
-*/
+
 // TRY TO GET ALL FOLLOWERS OF ALL USERS IN FOLLOWERSARRAY
 // Why is their data undefined?
+
+/*
 const allFollowersArray = [];
 for(i = 0; i < followersArray.length; i++){
 axios.get(`https://api.github.com/users/${followersArray[i]}/followers`)
@@ -92,27 +101,26 @@ axios.get(`https://api.github.com/users/${followersArray[i]}/followers`)
   }
   for(j = 0; j < allFollowersArray.length; j++){
     
-/*
-  axios.get(`https://api.github.com/users/${allFollowersArray[j]}`)
-  .then(response => {
-      console.log(response)
-      cardContainer.appendChild(cardCreator(response.data))
-  })
-  .catch((error) =>{
-    console.log(error, 'Error')
-  })
-  */
+
+//  axios.get(`https://api.github.com/users/${allFollowersArray[j]}`)
+// .then(response => {
+//      console.log(response)
+//      cardContainer.appendChild(cardCreator(response.data))
+//  })
+//  .catch((error) =>{
+//    console.log(error, 'Error')
+//  })
+//  
 
     cardContainer.appendChild(cardCreator(allFollowersArray[j]))
   }
 }
 )
 }
-
+*/
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
-
 <div class="card">
   <img src={image url of user} />
   <div class="card-info">
