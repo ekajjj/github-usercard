@@ -14,7 +14,14 @@
 axios.get('https://api.github.com/users/ekajjj')
 .then(response => {
   console.log(response);
+  cardContainer.appendChild(cardCreator(response.data))
+}) 
+.catch((error) =>{
+  console.log(error, 'Error')
 });
+
+
+
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
@@ -36,8 +43,59 @@ axios.get('https://api.github.com/users/ekajjj')
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+const followersArray = [
+  'chrisdalao',
+  'marshnme',
+  'sooshebot',
+  'beautytechy',
+  'tetondan',
+  'dustinmyers',
+  'justsml',
+  'luishrd',
+  'bigknell'
+];
 
+followersArray.forEach(name => {
+  axios.get(`https://api.github.com/users/${name}`)
+  .then(response => {
+      console.log(response)
+      cardContainer.appendChild(cardCreator(response.data))
+  })
+  .catch((error) =>{
+    console.log(error, 'Error')
+  })
+})
+
+
+// STRETCH FOLLOWERS
+const importFollowersArray = [];
+axios.get('https://api.github.com/users/ekajjj/followers')
+.then(response => {
+  console.log(response);
+  for(i = 0; i < response.data.length; i++){
+    importFollowersArray.push(response.data[i]);
+  }
+  for(j = 0; j < importFollowersArray.length; j++){
+    cardContainer.appendChild(cardCreator(importFollowersArray[j]))
+  }
+});
+
+// TRY TO GET ALL FOLLOWERS OF ALL USERS IN FOLLOWERSARRAY
+/*
+const allFollowersArray = [];
+for(i = 0; i < followersArray.length; i++){
+axios.get(`https://api.github.com/users/${name}/followers`)
+.then(response => {
+  for(i = 0; i < response.data.length; i++){
+    allFollowersArray.push(response.data[i]);
+  }
+  for(j = 0; j < allFollowersArray.length; j++){
+    cardContainer.appendChild(cardCreator(allFollowersArray[j]))
+  }
+}
+)
+}
+*/
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
 
@@ -55,5 +113,47 @@ const followersArray = [];
     <p>Bio: {users bio}</p>
   </div>
 </div>
-
 */
+
+const cardContainer = document.querySelector('.cards')
+
+function cardCreator(item) {
+  const card = document.createElement('div');
+  const cardinfoDiv = document.createElement('div');
+  const img = document.createElement('img');
+  const h3 = document.createElement('h3');
+  const nameP = document.createElement('p');
+  const locationP = document.createElement('p');
+  const profileP = document.createElement('p');
+  const followersP = document.createElement('p');
+  const followingP = document.createElement('p');
+  const bioP = document.createElement('p');
+  const aTag = document.createElement('a');
+  
+  card.classList.add('card');
+  cardinfoDiv.classList.add('card-info');
+  h3.classList.add('name');
+  nameP.classList.add('username');
+
+  card.appendChild(img);
+  card.appendChild(cardinfoDiv);
+  cardinfoDiv.appendChild(h3);
+  cardinfoDiv.appendChild(nameP);
+  cardinfoDiv.appendChild(locationP);
+  cardinfoDiv.appendChild(profileP);
+  cardinfoDiv.appendChild(followersP);
+  cardinfoDiv.appendChild(followingP);
+  cardinfoDiv.appendChild(bioP);
+  profileP.appendChild(aTag);
+
+  img.src = item.avatar_url
+  h3.textContent = item.login
+  nameP.textContent = item.name
+  locationP.textContent = `Location: ${item.location}`
+  followersP.textContent = `Followers: ${item.followers}`
+  followingP.textContent = `Following: ${item.following}`
+  bioP.textContent = item.username
+  aTag.textContent = `Profile: ${item.html_url}`
+  
+  return card;
+}
