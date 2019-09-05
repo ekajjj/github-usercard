@@ -79,7 +79,8 @@ axios.get('https://api.github.com/users/ekajjj/followers')
   for(j = 0; j < importFollowersArray.length; j++){
     axios.get(`https://api.github.com/users/${importFollowersArray[j].login}`)
   .then(response2 => {
-      //if(!followersArray.includes(response2.data))
+    //console.log(!followersArray.includes(response2.data));
+      //if(! followersArray.includes(response2))
       cardContainer.appendChild(cardCreator(response2.data))
   })
   .catch((error) =>{
